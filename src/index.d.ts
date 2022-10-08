@@ -1,5 +1,5 @@
 import { Object3D } from "three";
-import type { TColors } from "./constants";
+import type { TCubeColor } from "./constants";
 
 type Tuple<
   T,
@@ -9,7 +9,7 @@ type Tuple<
 
 type Parameters = {
   cubeSize: Tuple<number, 3>;
-  cubeColor: TColors; // URLFBD
+  cubeColor: TCubeColor; // URLFBD
 };
 
 export declare class RubiksCube extends Object3D {
