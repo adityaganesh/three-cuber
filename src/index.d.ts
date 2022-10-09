@@ -7,6 +7,6 @@ type Parameters = {
 };
 
 export declare class RubiksCube extends Object3D {
-  constructor();
+  constructor(cubeSize: TCubeSize, cubeColor: TCubeColor);
   parameters: Parameters;
 }

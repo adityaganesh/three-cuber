@@ -7,11 +7,14 @@ import {
   WebGLRenderer,
   MeshBasicMaterial,
   DoubleSide,
+  AxesHelper
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { generateValidMoves } from "./parser/notation";
+import { RubiksCube } from "./three-cuber/cubelets";
+import { COLORS } from './constants';
 
-console.log(generateValidMoves({ cubeSize: [6, 6, 6] }));
+// console.log(generateValidMoves({ cubeSize: [6, 6, 6] }));
 const scene = new Scene();
 const camera = new PerspectiveCamera(
   75,
@@ -24,18 +27,11 @@ const renderer = new WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new BoxGeometry(1, 1, 1);
-const material = new MeshBasicMaterial({
-  color: 0xffffff,
-  wireframe: false, //@ts-ignore
-  transparent: true,
-  opacity: 1,
-  side: DoubleSide,
-});
-const cube = new Mesh(geometry, material);
+const cube = new RubiksCube([3,3,3], COLORS);
+const axesHelper = new AxesHelper( 150 );
 scene.add(cube);
-
-camera.position.z = 5;
+scene.add(axesHelper);
+camera.position.z = 200;
 var controls = new OrbitControls(camera, renderer.domElement);
 function animate() {
   requestAnimationFrame(animate);
@@ -43,5 +39,4 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-//chutiyapa hai vscode
 animate();
