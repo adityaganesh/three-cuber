@@ -1,90 +1,59 @@
-import {
-    PerspectiveCamera,
-    Scene,
-    BoxGeometry,
-    MeshNormalMaterial,
-    Mesh,
-    WebGLRenderer,
-    MeshBasicMaterial,
-    DoubleSide,
-    Object3D
-  } from "three";
-
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import * as THREE from 'three';
+import * as THREE from "three";
 import type { TCubeColor, TCubeSize } from "../constants";
 
-
-export class RubiksCube extends Object3D
-{
-  
-  cubeSize: TCubeSize
-  cubeColor: TCubeColor
-  constructor(cubeSize: TCubeSize, cubeColor: TCubeColor)
-  {
+export class RubiksCube extends THREE.Object3D {
+  cubeSize: TCubeSize;
+  cubeColor: TCubeColor;
+  constructor(cubeSize: TCubeSize, cubeColor: TCubeColor) {
     super();
-    this.cubeSize = cubeSize
-    this.cubeColor = cubeColor
+    this.cubeSize = cubeSize;
+    this.cubeColor = cubeColor;
     this.addCube(); // Create the cube
     this.color(); //Add the color to cube
-  };
+  }
 
   /**
    * Add the cublets to Rubiks Cube Object3D
    */
-  addCube(){
-    var padding
-    padding = 5;
-    for (var i = 0; i < this.cubeSize[0]; i++)
-    {
-      spacey = (50 + padding) * i;
-      for (var j = 0; j < this.cubeSize[1]; j++) 
-      {
-        space = (50 + padding) * i;
-        for (var k = 0; k < this.cubeSize[2]; k++) 
-        {
-          spacex = (50 + padding) * i;
-          
-          //Creation of each cubelet
-          var cubelet = new THREE.Mesh
-          (
+  addCube() {
+    // Create Cube
+    const cubeletGap = 5;
+    const cubeletSize = 50;
+    const cubelets = new THREE.Group();
+
+    for (let i = 0; i < this.cubeSize[0]; i++) {
+      let spaceX = (cubeletSize + cubeletGap) * i;
+      for (let j = 0; j < this.cubeSize[1]; j++) {
+        let spaceY = (cubeletSize + cubeletGap) * j;
+        for (let k = 0; k < this.cubeSize[2]; k++) {
+          let spaceZ = (cubeletSize + cubeletGap) * k;
+
+          //Create of each cubelet
+          var cubelet = new THREE.Mesh(
             new THREE.BoxGeometry(50, 50, 50),
-            new THREE.MeshBasicMaterial
-            (
-              {
-                color: 0x34f,
-                wireframe: false,
-                transparent: true,
-                opacity: 1,
-                side: THREE.DoubleSide,
-            }
-            )
-           );
-           var space, spacex, spacey;
-           spacex = (50 + padding) * k;
-           // setting position of rubiks in the scene
-           cubelet.position.set(
-               -(50 + padding) + spacex,
-               -(50 + padding) + spacey,
-               -(50 + padding) + space
-           );
-           cubelet.updateMatrixWorld(true);
-           cubelet.matrixAutoUpdate = true;
+            new THREE.MeshBasicMaterial({
+              color: 0x34f,
+              wireframe: false,
+              transparent: true,
+              opacity: 1,
+            })
+          );
 
-           console.log("RUN");
+          // Setting position of Rubiks Cube in the scene
+          const offset = -(cubeletSize + cubeletGap);
+          cubelet.position.set(
+            offset + spaceX,
+            offset + spaceY,
+            offset + spaceZ
+          );
 
-           this.add(cubelet);
+          cubelets.add(cubelet);
         }
       }
     }
-    
+    this.add(cubelets);
   }
-  color()
-  {
-
-
-    
-  }
+  color() {}
 }
 /* HOW TO ADD CUBE:
   1. YOU NEED A SCENE TO ADD THE CUBE INTO(THREE JS)
