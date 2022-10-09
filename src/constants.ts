@@ -1,4 +1,16 @@
 // ####### Making the Cube #######
+
+export type Tuple<
+  T,
+  N extends number,
+  R extends readonly T[] = []
+> = R["length"] extends N ? R : Tuple<T, N, readonly [T, ...R]>;
+
+export const generateArray = (n: number) =>
+  [...Array(n)].map((_, index) => index + 1);
+
+export type TCubeSize = Tuple<number, 3>;
+
 const FACES = ["U", "L", "F", "R", "B", "D"] as const;
 export type TFACES = typeof FACES[number];
 
@@ -26,17 +38,24 @@ export const COLORS: TCubeColor = {
 
 // Cube Notations
 
-export const FACE_TURN = FACES;
-export const SLICE_TURN = ["M", "E", "S"] as const;
-export const WHOLE_TURN = ["X", "Y", "Z"] as const;
+export const FACE_MOVES = FACES;
+export const SLICE_MOVES = ["M", "E", "S"] as const;
+export const ROTATE_MOVES = ["x", "y", "z"] as const;
 
 // Notation Modifiers
 
 // Suffixes
-export const SUFFIX_MODIFIERS = ["", "'", "2", "w"] as const;
+// For 3x3x3 to infinity, for FACE_TURN
+export const SUFFIX_MODIFIERS_WIDE = ["w", "w2", "w2'"];
+export const SUFFIX_MODIFIERS_NON_WIDE = ["2", "2'", "'", ""];
 
-// //# Big Cubes
-// export const BIG_SUFFIX_MODIFIERS = ["w"] as const;
-
-// // Prefixes
-// export const BIG_PREFIX_MODIFIERS: number[] = [];
+// //# Only for Big Cubes [PREFIX_MODIFIERS]
+// For 4x4x4 to infinity
+export const BIG_PREFIX_MODIFIERS = (n: number): number[] => {
+  // Generates [3,4] for 4x4x4 ..
+  // Since Valid wide moves are nRw, where n is (1<n<cubeSize), and no n implies n=2
+  //! Add errors for 1Rw, 2Rw -> they imply 2Rw = Rw,
+  //! nRw = x for all cubes
+  // ? Pass these as error arrays, or alert dev or just use correct moves for them.
+  return [...Array(n - 3)].map((_, index) => index + 3);
+};

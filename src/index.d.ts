@@ -1,14 +1,8 @@
 import { Object3D } from "three";
-import type { TCubeColor } from "./constants";
-
-type Tuple<
-  T,
-  N extends number,
-  R extends readonly T[] = []
-> = R["length"] extends N ? R : Tuple<T, N, readonly [T, ...R]>;
+import type { TCubeColor, TCubeSize } from "./constants";
 
 type Parameters = {
-  cubeSize: Tuple<number, 3>;
+  cubeSize: TCubeSize;
   cubeColor: TCubeColor; // URLFBD
 };
 

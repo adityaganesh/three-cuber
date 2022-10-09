@@ -1,4 +1,4 @@
-import { 
+import {
   PerspectiveCamera,
   Scene,
   BoxGeometry,
@@ -7,35 +7,41 @@ import {
   WebGLRenderer,
   MeshBasicMaterial,
   DoubleSide,
-} from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+} from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { generateValidMoves } from "./parser/notation";
 
+console.log(generateValidMoves({ cubeSize: [6, 6, 6] }));
 const scene = new Scene();
-const camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const camera = new PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 
 const renderer = new WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-const geometry = new BoxGeometry( 1, 1, 1 );
-const material = new MeshBasicMaterial( 
-  {
+const geometry = new BoxGeometry(1, 1, 1);
+const material = new MeshBasicMaterial({
   color: 0xffffff,
   wireframe: false, //@ts-ignore
   transparent: true,
   opacity: 1,
-  side: DoubleSide,} );
-const cube = new Mesh( geometry, material );
-scene.add( cube );
+  side: DoubleSide,
+});
+const cube = new Mesh(geometry, material);
+scene.add(cube);
 
 camera.position.z = 5;
 var controls = new OrbitControls(camera, renderer.domElement);
 function animate() {
-  requestAnimationFrame( animate );
+  requestAnimationFrame(animate);
   controls.update();
-  renderer.render( scene, camera );
-};
+  renderer.render(scene, camera);
+}
 
-//chutiyapa hai vscode 
+//chutiyapa hai vscode
 animate();
-
