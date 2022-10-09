@@ -28,13 +28,13 @@ export class RubiksCube extends THREE.Object3D {
         for (let k = 0; k < this.cubeSize[2]; k++) {
           let spaceZ = (cubeletSize + cubeletGap) * k;
 
-          //Create of each cubelet
+          //Create each cubelet
           var cubelet = new THREE.Mesh(
             new THREE.BoxGeometry(50, 50, 50),
-            new THREE.MeshBasicMaterial({
+            new THREE.MeshStandardMaterial({
               color: 0x34f,
               wireframe: false,
-              transparent: true,
+              transparent: false,
               opacity: 1,
             })
           );

@@ -1,28 +1,45 @@
-import { PerspectiveCamera, Scene, AxesHelper, WebGLRenderer } from "three";
+import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { generateValidMoves } from "./parser/notation";
 import { RubiksCube } from "./three-cuber/three-cuber";
 import { COLORS } from "./constants";
+import "./style.css";
 
 console.log(generateValidMoves({ cubeSize: [6, 6, 6] }));
-const scene = new Scene();
-const camera = new PerspectiveCamera(
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
 );
 
-const renderer = new WebGLRenderer();
+const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const cube = new RubiksCube([3, 3, 3], COLORS);
-const axesHelper = new AxesHelper(150);
+const light = new THREE.AmbientLight(0xffffff); // soft white light
+const axesHelper = new THREE.AxesHelper(150);
 scene.add(cube);
 scene.add(axesHelper);
-camera.position.z = 200;
+scene.add(light);
+
+camera.position.z = 300;
+camera.position.x = 150;
+camera.position.y = 200;
+
 var controls = new OrbitControls(camera, renderer.domElement);
+
+function onResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+window.addEventListener("resize", onResize, false);
+
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
