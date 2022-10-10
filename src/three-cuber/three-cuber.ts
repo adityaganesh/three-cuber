@@ -1,13 +1,18 @@
 import * as THREE from "three";
-import type { TCubeColor, TCubeSize } from "../constants";
+import type { TCubeColor, TCubeSize, TFACES } from "../constants";
 
+type TMove = TFACES;
 export class RubiksCube extends THREE.Object3D {
   cubeSize: TCubeSize;
   cubeColor: TCubeColor;
+  cubeState: number[];
+
   constructor(cubeSize: TCubeSize, cubeColor: TCubeColor) {
     super();
     this.cubeSize = cubeSize;
     this.cubeColor = cubeColor;
+
+    this.cubeState = [...Array(cubeSize[0] * cubeSize[1] * cubeSize[2]).keys()];
     this.addCube(); // Create the cube
     this.color(); //Add the color to cube
   }
@@ -19,7 +24,8 @@ export class RubiksCube extends THREE.Object3D {
     // Create Cube
     const cubeletGap = 5;
     const cubeletSize = 50;
-    const cubelets = new THREE.Group();
+    const noMoveGroup = new THREE.Group();
+    const moveGroup = new THREE.Group();
 
     for (let i = 0; i < this.cubeSize[0]; i++) {
       let spaceX = (cubeletSize + cubeletGap) * i;
@@ -56,14 +62,35 @@ export class RubiksCube extends THREE.Object3D {
             offset(this.cubeSize[2]) + spaceZ
           );
 
-          cubelets.add(cubelet);
+          noMoveGroup.add(cubelet);
         }
       }
     }
-    this.add(cubelets);
+    this.add(noMoveGroup);
+    this.add(moveGroup);
   }
 
   color() {}
+
+  /**
+   * Tracks cubelets position (TODO: track orientation)
+   *
+   * @param move Move performed
+   */
+  updateCubeState(move: TMove) {}
+
+  /**
+   * Implement Moves on Rubiks Cube
+   *
+   * @param move Move to be performed, in WCA Notation
+   * @param animate Boolean for animate or not
+   */
+  doMove(move: TMove, animate: boolean) {
+    //! Need to add all moves.
+    // Add cubelets to the moveGroup, that need to be moved.
+    // Add rest of the cubelets to noMoveGroup.
+    // (So, they still remain under scene object)
+  }
 }
 /* HOW TO ADD CUBE:
   1. YOU NEED A SCENE TO ADD THE CUBE INTO(THREE JS)

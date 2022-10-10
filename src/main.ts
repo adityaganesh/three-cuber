@@ -3,9 +3,11 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { generateValidMoves } from "./parser/notation";
 import { RubiksCube } from "./three-cuber/three-cuber";
 import { COLORS } from "./constants";
+import { cubeMatrix } from "./cubeMatrix/cubeMatrix";
 import "./style.css";
 
 console.log(generateValidMoves({ cubeSize: [6, 6, 6] }));
+console.log(JSON.stringify(cubeMatrix));
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -19,7 +21,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const cube = new RubiksCube([3, 4, 5], COLORS);
+const cube = new RubiksCube([2, 2, 2], COLORS);
 const light = new THREE.AmbientLight(0xffffff); // soft white light
 const axesHelper = new THREE.AxesHelper(150);
 scene.add(cube);
