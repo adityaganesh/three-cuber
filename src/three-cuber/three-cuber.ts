@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import type { TCubeColor, TCubeSize, TFACES } from "../constants";
+import { COLORS, TCubeColor, TCubeSize, TFACES } from "../constants";
 
 type TMove = TFACES;
 export class RubiksCube extends THREE.Object3D {
@@ -14,7 +14,6 @@ export class RubiksCube extends THREE.Object3D {
 
     this.cubeState = [...Array(cubeSize[0] * cubeSize[1] * cubeSize[2]).keys()];
     this.addCube(); // Create the cube
-    this.color(); //Add the color to cube
   }
 
   /**
@@ -35,14 +34,20 @@ export class RubiksCube extends THREE.Object3D {
           let spaceZ = (cubeletSize + cubeletGap) * k;
 
           //Create each cubelet
-          var cubelet = new THREE.Mesh(
-            new THREE.BoxGeometry(50, 50, 50),
-            new THREE.MeshStandardMaterial({
-              color: 0x34f,
-              wireframe: false,
-              transparent: false,
-              opacity: 1,
-            })
+          let geometry = new THREE.BoxGeometry(
+            cubeletSize,
+            cubeletSize,
+            cubeletSize
+          );
+          let material = new THREE.MeshBasicMaterial({
+            vertexColors: true,
+          });
+
+          // ? Can be made efficient by using InstancedMesh and Matrix4
+          let cubelet = new THREE.Mesh(
+            geometry,
+            material
+            // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
           );
 
           // Setting position of Rubiks Cube in the scene
@@ -62,15 +67,48 @@ export class RubiksCube extends THREE.Object3D {
             offset(this.cubeSize[2]) + spaceZ
           );
 
+          if (i == 2 && j == 2 && k == 2) {
+            this.color(cubelet.geometry);
+          }
           noMoveGroup.add(cubelet);
         }
       }
     }
+
     this.add(noMoveGroup);
     this.add(moveGroup);
   }
 
-  color() {}
+  color(geometry: THREE.BoxGeometry) {
+    const colorU = new THREE.Color();
+    const colorD = new THREE.Color();
+    const colorL = new THREE.Color();
+    const colorR = new THREE.Color();
+    const colorB = new THREE.Color();
+    const colorF = new THREE.Color();
+
+    // generate color data for each vertex
+    const colors = []; // Sets colors to individual triganles
+
+    colorU.set(COLORS.U);
+    colorR.set(COLORS.R);
+    colorD.set(COLORS.D);
+    colorF.set(COLORS.F);
+
+    // define the same color for each vertex of a triangle
+
+    colors.push(colorD.r, colorD.g, colorD.b);
+    colors.push(colorR.r, colorR.g, colorR.b);
+    colors.push(colorU.r, colorU.g, colorU.b);
+    colors.push(colorF.r, colorF.g, colorF.b);
+    colors.push(colorD.r, colorD.g, colorD.b);
+    colors.push(colorR.r, colorR.g, colorR.b);
+    colors.push(colorU.r, colorU.g, colorU.b);
+    colors.push(colorF.r, colorF.g, colorF.b);
+
+    // define the new attribute
+    geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3)); // set colors w.r.t vertices
+  }
 
   /**
    * Tracks cubelets position (TODO: track orientation)
