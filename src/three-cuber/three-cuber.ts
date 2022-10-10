@@ -40,11 +40,20 @@ export class RubiksCube extends THREE.Object3D {
           );
 
           // Setting position of Rubiks Cube in the scene
-          const offset = -(cubeletSize + cubeletGap);
+
+          /**
+           * Offset to center the cube in particular direction base on size of cube
+           * @param size : No. of cubelets in a particular direction
+           * @returns Offset required to center the cube in that direction
+           */
+          const offset = (size: number) => {
+            return -((cubeletSize + cubeletGap) * (size - 1)) / 2;
+          };
+
           cubelet.position.set(
-            offset + spaceX,
-            offset + spaceY,
-            offset + spaceZ
+            offset(this.cubeSize[0]) + spaceX,
+            offset(this.cubeSize[1]) + spaceY,
+            offset(this.cubeSize[2]) + spaceZ
           );
 
           cubelets.add(cubelet);
@@ -53,6 +62,7 @@ export class RubiksCube extends THREE.Object3D {
     }
     this.add(cubelets);
   }
+
   color() {}
 }
 /* HOW TO ADD CUBE:
