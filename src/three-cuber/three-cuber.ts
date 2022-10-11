@@ -26,52 +26,64 @@ export class RubiksCube extends THREE.Object3D {
     const noMoveGroup = new THREE.Group();
     const moveGroup = new THREE.Group();
 
+    /**
+     * Offset to center the cube in particular direction base on size of cube
+     * @param size  No. of cubelets in a particular direction
+     * @returns Offset required to center the cube in that direction
+     */
+    const offset = (size: number) => {
+      return -((cubeletSize + cubeletGap) * (size - 1)) / 2;
+    };
+
     for (let i = 0; i < this.cubeSize[0]; i++) {
       let spaceX = (cubeletSize + cubeletGap) * i;
       for (let j = 0; j < this.cubeSize[1]; j++) {
         let spaceY = (cubeletSize + cubeletGap) * j;
         for (let k = 0; k < this.cubeSize[2]; k++) {
-          let spaceZ = (cubeletSize + cubeletGap) * k;
+          //### Create Only Visible Cubelets
+          // Visible Cubelets have extreme values of i || j || k
+          if (
+            i === 0 ||
+            i === this.cubeSize[0] - 1 ||
+            j === 0 ||
+            j === this.cubeSize[1] - 1 ||
+            k === 0 ||
+            k === this.cubeSize[2] - 1
+          ) {
+            let spaceZ = (cubeletSize + cubeletGap) * k;
 
-          //Create each cubelet
-          const geometry = new THREE.BoxGeometry(
-            cubeletSize,
-            cubeletSize,
-            cubeletSize
-          );
+            //Create each cubelet
+            const geometry = new THREE.BoxGeometry(
+              cubeletSize,
+              cubeletSize,
+              cubeletSize
+            );
 
-          const faceMaterials = this.colorCubletFaces(this.cubeSize, [i, j, k]);
+            const faceMaterials = this.colorCubletFaces(this.cubeSize, [
+              i,
+              j,
+              k,
+            ]);
 
-          // ? Can be made efficient by using InstancedMesh and Matrix4
-          let cubelet = new THREE.Mesh(
-            geometry,
-            faceMaterials
-            // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
-          );
+            // ? Can be made efficient by using InstancedMesh and Matrix4
 
-          // Setting position of Rubiks Cube in the scene
+            const cubelet = new THREE.Mesh(
+              geometry,
+              faceMaterials
+              // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
+            );
 
-          /**
-           * Offset to center the cube in particular direction base on size of cube
-           * @param size : No. of cubelets in a particular direction
-           * @returns Offset required to center the cube in that direction
-           */
-          const offset = (size: number) => {
-            return -((cubeletSize + cubeletGap) * (size - 1)) / 2;
-          };
+            // Setting position of Rubiks Cube in the scene
+            // TODO: if coord constain (0,n1,n2,n3) then it is a face cubelet, hide rest
 
-          // TODO: if coord constain (0,n1,n2,n3) then it is a face cubelet, hide rest
+            cubelet.position.set(
+              offset(this.cubeSize[0]) + spaceX,
+              offset(this.cubeSize[1]) + spaceY,
+              offset(this.cubeSize[2]) + spaceZ
+            );
 
-          cubelet.position.set(
-            offset(this.cubeSize[0]) + spaceX,
-            offset(this.cubeSize[1]) + spaceY,
-            offset(this.cubeSize[2]) + spaceZ
-          );
-
-          if (i == 2 && j == 2 && k == 2) {
-            this.color(cubelet.geometry);
+            noMoveGroup.add(cubelet);
           }
-          noMoveGroup.add(cubelet);
         }
       }
     }
@@ -81,10 +93,10 @@ export class RubiksCube extends THREE.Object3D {
   }
 
   /**
-   * Color Cubelet faces based on
-   * @param [x,y,z] : Size of cube
-   * @param [i,j,k] : Position of cubelet
-   * @returns Array of materials for each face of cubelet
+   * Color Cubelet faces based on cubelet's position and face's facing direction
+   * @param {Array} cubeSize Size of cube
+   * @param {Array<number,number,number>} ijk Nested Loops indices, which we used to form the cube
+   * @returns {Array<THREE.MeshBasicMaterial>} faceMaterials: Array of materials for each face of cubelet
    */
   colorCubletFaces(
     [x, y, z]: TCubeSize,

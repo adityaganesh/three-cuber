@@ -21,7 +21,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const cube = new RubiksCube([1, 2, 3], COLORS);
+const cube = new RubiksCube([3, 3, 3], COLORS);
 const light = new THREE.AmbientLight(0xffffff); // soft white light
 const axesHelper = new THREE.AxesHelper(150);
 scene.add(cube);
