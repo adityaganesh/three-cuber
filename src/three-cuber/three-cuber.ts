@@ -34,19 +34,22 @@ export class RubiksCube extends THREE.Object3D {
           let spaceZ = (cubeletSize + cubeletGap) * k;
 
           //Create each cubelet
-          let geometry = new THREE.BoxGeometry(
+          const geometry = new THREE.BoxGeometry(
             cubeletSize,
             cubeletSize,
             cubeletSize
           );
-          let material = new THREE.MeshBasicMaterial({
-            vertexColors: true,
-          });
+
+          const faceMaterials = this.identifyFaceAndColorThem(this.cubeSize, [
+            i,
+            j,
+            k,
+          ]);
 
           // ? Can be made efficient by using InstancedMesh and Matrix4
           let cubelet = new THREE.Mesh(
             geometry,
-            material
+            faceMaterials
             // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
           );
 
@@ -60,6 +63,8 @@ export class RubiksCube extends THREE.Object3D {
           const offset = (size: number) => {
             return -((cubeletSize + cubeletGap) * (size - 1)) / 2;
           };
+
+          // TODO: if coord constain (0,n1,n2,n3) then it is a face cubelet, hide rest
 
           cubelet.position.set(
             offset(this.cubeSize[0]) + spaceX,
@@ -110,6 +115,44 @@ export class RubiksCube extends THREE.Object3D {
     geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3)); // set colors w.r.t vertices
   }
 
+  identifyFaceAndColorThem(
+    [x, y, z]: TCubeSize,
+    [i, j, k]: [number, number, number]
+  ): THREE.MeshBasicMaterial[] {
+    const faceMaterials = [
+      new THREE.MeshBasicMaterial({ color: "#000000" }),
+      new THREE.MeshBasicMaterial({ color: "#000000" }),
+      new THREE.MeshBasicMaterial({ color: "#000000" }),
+      new THREE.MeshBasicMaterial({ color: "#000000" }),
+      new THREE.MeshBasicMaterial({ color: "#000000" }),
+      new THREE.MeshBasicMaterial({ color: "#000000" }),
+    ];
+    // Face Identification -> Cublets -> Face Colors
+    if (i === 0) {
+      // Cublets of Left Face
+      faceMaterials[1] = new THREE.MeshBasicMaterial({ color: COLORS.L }); // left
+    }
+    if (i === x - 1) {
+      // Cublets of Right Face
+      faceMaterials[0] = new THREE.MeshBasicMaterial({ color: COLORS.R }); // right
+    }
+    if (j === 0) {
+      // Cublets of Down Face
+      faceMaterials[3] = new THREE.MeshBasicMaterial({ color: COLORS.D }); // down
+    }
+    if (j === y - 1) {
+      faceMaterials[2] = new THREE.MeshBasicMaterial({ color: COLORS.U }); // upper
+    }
+    if (k === 0) {
+      // Cublets of Back Face
+      faceMaterials[5] = new THREE.MeshBasicMaterial({ color: COLORS.B }); // back
+    }
+    if (k === z - 1) {
+      // Cublets of Front Face
+      faceMaterials[4] = new THREE.MeshBasicMaterial({ color: COLORS.F }); // front
+    }
+    return faceMaterials;
+  }
   /**
    * Tracks cubelets position (TODO: track orientation)
    *
