@@ -40,11 +40,7 @@ export class RubiksCube extends THREE.Object3D {
             cubeletSize
           );
 
-          const faceMaterials = this.identifyFaceAndColorThem(this.cubeSize, [
-            i,
-            j,
-            k,
-          ]);
+          const faceMaterials = this.colorCubletFaces(this.cubeSize, [i, j, k]);
 
           // ? Can be made efficient by using InstancedMesh and Matrix4
           let cubelet = new THREE.Mesh(
@@ -115,7 +111,13 @@ export class RubiksCube extends THREE.Object3D {
     geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3)); // set colors w.r.t vertices
   }
 
-  identifyFaceAndColorThem(
+  /**
+   * Color Cubelet faces based on
+   * @param [x,y,z] : Size of cube
+   * @param [i,j,k] : Position of cubelet
+   * @returns Array of materials for each face of cubelet
+   */
+  colorCubletFaces(
     [x, y, z]: TCubeSize,
     [i, j, k]: [number, number, number]
   ): THREE.MeshBasicMaterial[] {
@@ -129,27 +131,28 @@ export class RubiksCube extends THREE.Object3D {
     ];
     // Face Identification -> Cublets -> Face Colors
     if (i === 0) {
-      // Cublets of Left Face
-      faceMaterials[1] = new THREE.MeshBasicMaterial({ color: COLORS.L }); // left
+      // Left Cubelets
+      faceMaterials[1] = new THREE.MeshBasicMaterial({ color: COLORS.L }); // Colors Left face
     }
     if (i === x - 1) {
-      // Cublets of Right Face
-      faceMaterials[0] = new THREE.MeshBasicMaterial({ color: COLORS.R }); // right
+      // Right Cubelets
+      faceMaterials[0] = new THREE.MeshBasicMaterial({ color: COLORS.R }); // Colors Right face
     }
     if (j === 0) {
-      // Cublets of Down Face
-      faceMaterials[3] = new THREE.MeshBasicMaterial({ color: COLORS.D }); // down
+      // Down Cubelets
+      faceMaterials[3] = new THREE.MeshBasicMaterial({ color: COLORS.D }); // Colors Down face
     }
     if (j === y - 1) {
-      faceMaterials[2] = new THREE.MeshBasicMaterial({ color: COLORS.U }); // upper
+      // Up Cubelets
+      faceMaterials[2] = new THREE.MeshBasicMaterial({ color: COLORS.U }); // Colors Up face
     }
     if (k === 0) {
-      // Cublets of Back Face
-      faceMaterials[5] = new THREE.MeshBasicMaterial({ color: COLORS.B }); // back
+      // Back Cubelets
+      faceMaterials[5] = new THREE.MeshBasicMaterial({ color: COLORS.B }); // Colors Back face
     }
     if (k === z - 1) {
-      // Cublets of Front Face
-      faceMaterials[4] = new THREE.MeshBasicMaterial({ color: COLORS.F }); // front
+      // Front Cubelets
+      faceMaterials[4] = new THREE.MeshBasicMaterial({ color: COLORS.F }); // Colors Front face
     }
     return faceMaterials;
   }
