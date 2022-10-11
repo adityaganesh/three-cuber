@@ -121,14 +121,18 @@ export class RubiksCube extends THREE.Object3D {
     [x, y, z]: TCubeSize,
     [i, j, k]: [number, number, number]
   ): THREE.MeshBasicMaterial[] {
+    // Base color of cubelet
     const faceMaterials = [
-      new THREE.MeshBasicMaterial({ color: "#000000" }),
-      new THREE.MeshBasicMaterial({ color: "#000000" }),
-      new THREE.MeshBasicMaterial({ color: "#000000" }),
-      new THREE.MeshBasicMaterial({ color: "#000000" }),
-      new THREE.MeshBasicMaterial({ color: "#000000" }),
-      new THREE.MeshBasicMaterial({ color: "#000000" }),
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Left
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Right
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Down
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Up
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Back
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Front
     ];
+    // Order of Colors in faceMaterials
+    // LRDUBF
+
     // Face Identification -> Cublets -> Face Colors
     if (i === 0) {
       // Left Cubelets
