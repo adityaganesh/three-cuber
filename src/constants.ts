@@ -34,6 +34,11 @@ export const COLORS: TCubeColor = {
   D: "#FFD500",
 };
 
+export const MATERIAL_PROPS: THREE.MeshPhysicalMaterialParameters = {
+  color: "#000000",
+  clearcoat: 0.5,
+};
+
 // ####### Moving the Cube #######
 
 // Cube Notations

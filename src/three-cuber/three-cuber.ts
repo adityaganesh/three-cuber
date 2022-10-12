@@ -1,37 +1,55 @@
 import * as THREE from "three";
-import { COLORS, TCubeColor, TCubeSize, TFACES } from "../constants";
+import {
+  COLORS,
+  TCubeColor,
+  TCubeSize,
+  TFACES,
+  MATERIAL_PROPS,
+} from "../constants";
 
 type TMove = TFACES;
 
-interface RubiksCubeConstructorProps {
-  cubeSize?: TCubeSize;
-  cubeColor?: TCubeColor;
-  materialProperties?: THREE.MeshBasicMaterialParameters;
-}
-
-export class RubiksCube extends THREE.Object3D {
+interface TRubiksCube {
   cubeSize: TCubeSize;
   cubeColor: TCubeColor;
   materialProperties: THREE.MeshPhysicalMaterialParameters;
   cubeState: number[];
 
-  constructor({
-    cubeSize,
-    cubeColor,
-    materialProperties,
-  }: RubiksCubeConstructorProps) {
+  private addCube(): void;
+  public colorCubletFaces(
+    [x, y, z]: TCubeSize,
+    [i, j, k]: [number, number, number]
+  ): THREE.MeshPhysicalMaterial[];
+
+  protected updateCubeState(move: TMove): void;
+  public doMove(move: TMove, animate: boolean): void;
+}
+
+/**
+ * Rubiks Cube Object3D
+ *
+ * @params {TCubeSize} cubeSize - The size of the cube
+ * @params {TCubeColor} cubeColor - The color of the cube
+ * @params {THREE.MeshPhysicalMaterialParameters} materialProperties - The material properties of the cube
+ */
+export class RubiksCube extends THREE.Object3D implements TRubiksCube {
+  cubeState: number[];
+
+  constructor(
+    public cubeSize: TCubeSize = [3, 3, 3],
+    public cubeColor: TCubeColor = COLORS,
+    public materialProperties: THREE.MeshPhysicalMaterialParameters = MATERIAL_PROPS
+  ) {
     super();
 
-    this.cubeSize = cubeSize || [3, 3, 3];
-    this.cubeColor = cubeColor || COLORS;
-    this.materialProperties = materialProperties || {
-      color: "#000000",
-      clearcoat: 0.5,
-    };
+    this.cubeSize = cubeSize;
+    this.cubeColor = cubeColor;
+    this.materialProperties = materialProperties;
 
     this.cubeState = [
       ...Array(this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]).keys(),
     ];
+
     this.addCube(); // Create the cube
 
     // Add turn limitation for cuboids ???
@@ -42,7 +60,7 @@ export class RubiksCube extends THREE.Object3D {
   /**
    * Add the cublets to Rubiks Cube Object3D
    */
-  addCube() {
+  private addCube() {
     // Create Cube
     const cubeletGap = 5;
     const cubeletSize = 50;
@@ -122,7 +140,7 @@ export class RubiksCube extends THREE.Object3D {
    * @param {Array<number,number,number>} ijk Nested Loops indices, which we used to form the cube
    * @returns {Array<THREE.MeshPhysicalMaterial>} faceMaterials: Array of materials for each face of cubelet
    */
-  colorCubletFaces(
+  public colorCubletFaces(
     [x, y, z]: TCubeSize,
     [i, j, k]: [number, number, number]
   ): THREE.MeshPhysicalMaterial[] {
@@ -192,7 +210,9 @@ export class RubiksCube extends THREE.Object3D {
    *
    * @param move Move performed
    */
-  updateCubeState(move: TMove) {}
+  protected updateCubeState(move: TMove) {
+    console.log(move);
+  }
 
   /**
    * Implement Moves on Rubiks Cube
@@ -200,11 +220,12 @@ export class RubiksCube extends THREE.Object3D {
    * @param move Move to be performed, in WCA Notation
    * @param animate Boolean for animate or not
    */
-  doMove(move: TMove, animate: boolean) {
+  public doMove(move: TMove, animate: boolean) {
     //! Need to add all moves.
     // Add cubelets to the moveGroup, that need to be moved.
     // Add rest of the cubelets to noMoveGroup.
     // (So, they still remain under scene object)
+    console.log(move, animate);
   }
 }
 /* HOW TO ADD CUBE:

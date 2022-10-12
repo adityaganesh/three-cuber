@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { generateValidMoves } from "./parser/notation";
 import { RubiksCube } from "./three-cuber/three-cuber";
-import { COLORS } from "./constants";
 import { cubeMatrix } from "./cubeMatrix/cubeMatrix";
 import "./style.css";
 
@@ -21,7 +20,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const cube = new RubiksCube({});
+const cube = new RubiksCube();
 const light = new THREE.AmbientLight(0xffffff); // soft white light
 const axesHelper = new THREE.AxesHelper(150);
 scene.add(cube);
