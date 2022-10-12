@@ -2,17 +2,36 @@ import * as THREE from "three";
 import { COLORS, TCubeColor, TCubeSize, TFACES } from "../constants";
 
 type TMove = TFACES;
+
+interface RubiksCubeConstructorProps {
+  cubeSize?: TCubeSize;
+  cubeColor?: TCubeColor;
+  materialProperties?: THREE.MeshBasicMaterialParameters;
+}
+
 export class RubiksCube extends THREE.Object3D {
   cubeSize: TCubeSize;
   cubeColor: TCubeColor;
+  materialProperties: THREE.MeshPhysicalMaterialParameters;
   cubeState: number[];
 
-  constructor(cubeSize: TCubeSize, cubeColor: TCubeColor) {
+  constructor({
+    cubeSize,
+    cubeColor,
+    materialProperties,
+  }: RubiksCubeConstructorProps) {
     super();
-    this.cubeSize = cubeSize;
-    this.cubeColor = cubeColor;
 
-    this.cubeState = [...Array(cubeSize[0] * cubeSize[1] * cubeSize[2]).keys()];
+    this.cubeSize = cubeSize || [3, 3, 3];
+    this.cubeColor = cubeColor || COLORS;
+    this.materialProperties = materialProperties || {
+      color: "#000000",
+      clearcoat: 0.5,
+    };
+
+    this.cubeState = [
+      ...Array(this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]).keys(),
+    ];
     this.addCube(); // Create the cube
 
     // Add turn limitation for cuboids ???
@@ -101,21 +120,21 @@ export class RubiksCube extends THREE.Object3D {
    * Color Cubelet faces based on cubelet's position and face's facing direction
    * @param {Array} cubeSize Size of cube
    * @param {Array<number,number,number>} ijk Nested Loops indices, which we used to form the cube
-   * @returns {Array<THREE.MeshBasicMaterial>} faceMaterials: Array of materials for each face of cubelet
+   * @returns {Array<THREE.MeshPhysicalMaterial>} faceMaterials: Array of materials for each face of cubelet
    */
   colorCubletFaces(
     [x, y, z]: TCubeSize,
     [i, j, k]: [number, number, number]
-  ): THREE.MeshBasicMaterial[] {
+  ): THREE.MeshPhysicalMaterial[] {
     // Base color of cubelet
     // TODO: Move Materials out of here (this functions runs n1*n2*n3 times)
     const faceMaterials = [
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Right
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Left
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Up
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Down
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Front
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Back
+      new THREE.MeshPhysicalMaterial({ color: "#000000", clearcoat: 0.5 }), // Right
+      new THREE.MeshPhysicalMaterial({ color: "#000000", clearcoat: 0.5 }), // Left
+      new THREE.MeshPhysicalMaterial({ color: "#000000", clearcoat: 0.5 }), // Up
+      new THREE.MeshPhysicalMaterial({ color: "#000000", clearcoat: 0.5 }), // Down
+      new THREE.MeshPhysicalMaterial({ color: "#000000", clearcoat: 0.5 }), // Front
+      new THREE.MeshPhysicalMaterial({ color: "#000000", clearcoat: 0.5 }), // Back
     ];
     // Order of Colors in faceMaterials
     // RLUDFB
@@ -124,27 +143,45 @@ export class RubiksCube extends THREE.Object3D {
 
     if (i === x - 1) {
       // Right Cubelets
-      faceMaterials[0] = new THREE.MeshBasicMaterial({ color: COLORS.R }); // Colors Right face
+      faceMaterials[0] = new THREE.MeshPhysicalMaterial({
+        color: COLORS.R,
+        clearcoat: 0.5,
+      }); // Colors Right face
     }
     if (i === 0) {
       // Left Cubelets
-      faceMaterials[1] = new THREE.MeshBasicMaterial({ color: COLORS.L }); // Colors Left face
+      faceMaterials[1] = new THREE.MeshPhysicalMaterial({
+        color: COLORS.L,
+        clearcoat: 0.5,
+      }); // Colors Left face
     }
     if (j === y - 1) {
       // Up Cubelets
-      faceMaterials[2] = new THREE.MeshBasicMaterial({ color: COLORS.U }); // Colors Up face
+      faceMaterials[2] = new THREE.MeshPhysicalMaterial({
+        color: COLORS.U,
+        clearcoat: 0.5,
+      }); // Colors Up face
     }
     if (j === 0) {
       // Down Cubelets
-      faceMaterials[3] = new THREE.MeshBasicMaterial({ color: COLORS.D }); // Colors Down face
+      faceMaterials[3] = new THREE.MeshPhysicalMaterial({
+        color: COLORS.D,
+        clearcoat: 0.5,
+      }); // Colors Down face
     }
     if (k === z - 1) {
       // Front Cubelets
-      faceMaterials[4] = new THREE.MeshBasicMaterial({ color: COLORS.F }); // Colors Front face
+      faceMaterials[4] = new THREE.MeshPhysicalMaterial({
+        color: COLORS.F,
+        clearcoat: 0.5,
+      }); // Colors Front face
     }
     if (k === 0) {
       // Back Cubelets
-      faceMaterials[5] = new THREE.MeshBasicMaterial({ color: COLORS.B }); // Colors Back face
+      faceMaterials[5] = new THREE.MeshPhysicalMaterial({
+        color: COLORS.B,
+        clearcoat: 0.5,
+      }); // Colors Back face
     }
 
     return faceMaterials;
