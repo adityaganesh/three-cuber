@@ -13,8 +13,8 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
-  0.1,
-  1000
+  0.01,
+  50000
 );
 
 const renderer = new THREE.WebGLRenderer();
@@ -28,7 +28,7 @@ scene.add(cube);
 scene.add(axesHelper);
 scene.add(light);
 
-camera.position.z = 300;
+camera.position.z = 500;
 camera.position.x = 150;
 camera.position.y = 200;
 

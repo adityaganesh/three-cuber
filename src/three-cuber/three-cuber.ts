@@ -14,6 +14,10 @@ export class RubiksCube extends THREE.Object3D {
 
     this.cubeState = [...Array(cubeSize[0] * cubeSize[1] * cubeSize[2]).keys()];
     this.addCube(); // Create the cube
+
+    // Add turn limitation for cuboids ???
+    //(because they may not be physically possible)
+    //(or For bandaged cubes)
   }
 
   /**
@@ -88,6 +92,7 @@ export class RubiksCube extends THREE.Object3D {
       }
     }
 
+    // Add Groups as child of Rubiks Cube Object3D
     this.add(noMoveGroup);
     this.add(moveGroup);
   }
@@ -103,42 +108,45 @@ export class RubiksCube extends THREE.Object3D {
     [i, j, k]: [number, number, number]
   ): THREE.MeshBasicMaterial[] {
     // Base color of cubelet
+    // TODO: Move Materials out of here (this functions runs n1*n2*n3 times)
     const faceMaterials = [
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Left
       new THREE.MeshBasicMaterial({ color: "#000000" }), // Right
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Down
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Left
       new THREE.MeshBasicMaterial({ color: "#000000" }), // Up
-      new THREE.MeshBasicMaterial({ color: "#000000" }), // Back
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Down
       new THREE.MeshBasicMaterial({ color: "#000000" }), // Front
+      new THREE.MeshBasicMaterial({ color: "#000000" }), // Back
     ];
     // Order of Colors in faceMaterials
-    // LRDUBF
+    // RLUDFB
 
     // Face Identification -> Cublets -> Face Colors
-    if (i === 0) {
-      // Left Cubelets
-      faceMaterials[1] = new THREE.MeshBasicMaterial({ color: COLORS.L }); // Colors Left face
-    }
+
     if (i === x - 1) {
       // Right Cubelets
       faceMaterials[0] = new THREE.MeshBasicMaterial({ color: COLORS.R }); // Colors Right face
     }
-    if (j === 0) {
-      // Down Cubelets
-      faceMaterials[3] = new THREE.MeshBasicMaterial({ color: COLORS.D }); // Colors Down face
+    if (i === 0) {
+      // Left Cubelets
+      faceMaterials[1] = new THREE.MeshBasicMaterial({ color: COLORS.L }); // Colors Left face
     }
     if (j === y - 1) {
       // Up Cubelets
       faceMaterials[2] = new THREE.MeshBasicMaterial({ color: COLORS.U }); // Colors Up face
     }
-    if (k === 0) {
-      // Back Cubelets
-      faceMaterials[5] = new THREE.MeshBasicMaterial({ color: COLORS.B }); // Colors Back face
+    if (j === 0) {
+      // Down Cubelets
+      faceMaterials[3] = new THREE.MeshBasicMaterial({ color: COLORS.D }); // Colors Down face
     }
     if (k === z - 1) {
       // Front Cubelets
       faceMaterials[4] = new THREE.MeshBasicMaterial({ color: COLORS.F }); // Colors Front face
     }
+    if (k === 0) {
+      // Back Cubelets
+      faceMaterials[5] = new THREE.MeshBasicMaterial({ color: COLORS.B }); // Colors Back face
+    }
+
     return faceMaterials;
   }
 
