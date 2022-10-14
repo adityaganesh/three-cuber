@@ -111,7 +111,6 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
             // ? Can be made efficient by using InstancedMesh and Matrix4
 
             const cubelet = dcText(`${count}`, 15, 20, 50, 0x000000, 0xcccccc); // text #1, Hello, world
-            count++;
 
             // const cubelet = new THREE.Mesh(
             //   geometry,
@@ -130,6 +129,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
 
             noMoveGroup.add(cubelet);
           }
+          count++;
         }
       }
     }
