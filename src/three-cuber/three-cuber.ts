@@ -6,6 +6,7 @@ import {
   TFACES,
   MATERIAL_PROPS,
 } from "../constants";
+import { dcText } from "../dcText";
 
 type TMove = TFACES;
 
@@ -23,6 +24,7 @@ interface TRubiksCube {
 
   protected updateCubeState(move: TMove): void;
   public doMove(move: TMove, animate: boolean): void;
+  public cubeSticker(text: string, id: number);
 }
 
 /**
@@ -51,7 +53,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     ];
 
     this.addCube(); // Create the cube
-
+    this.cubeSticker("U", 0);
     // Add turn limitation for cuboids ???
     //(because they may not be physically possible)
     //(or For bandaged cubes)
@@ -66,7 +68,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     const cubeletSize = 50;
     const noMoveGroup = new THREE.Group();
     const moveGroup = new THREE.Group();
-
+    let count = 0;
     /**
      * Offset to center the cube in particular direction base on size of cube
      * @param size  No. of cubelets in a particular direction
@@ -108,11 +110,14 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
 
             // ? Can be made efficient by using InstancedMesh and Matrix4
 
-            const cubelet = new THREE.Mesh(
-              geometry,
-              faceMaterials
-              // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
-            );
+            const cubelet = dcText(`${count}`, 15, 20, 50, 0x000000, 0xcccccc); // text #1, Hello, world
+            count++;
+
+            // const cubelet = new THREE.Mesh(
+            //   geometry,
+            //   faceMaterials
+            //   // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
+            // );
 
             // Setting position of Rubiks Cube in the scene
             // TODO: if coord constain (0,n1,n2,n3) then it is a face cubelet, hide rest
@@ -226,6 +231,20 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     // Add rest of the cubelets to noMoveGroup.
     // (So, they still remain under scene object)
     console.log(move, animate);
+  }
+  public cubeSticker(text: string, id: number) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    const texture = new THREE.Texture(canvas);
+    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const geometry = new THREE.PlaneGeometry(0.5, 0.5);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(0, 0, 0);
+    mesh.rotation.set(0, 0, 0);
+    mesh.scale.set(200, 200, 200);
+    mesh.name = id.toString();
+    this.add(mesh);
+    return mesh;
   }
 }
 /* HOW TO ADD CUBE:
