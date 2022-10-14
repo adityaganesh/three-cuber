@@ -68,7 +68,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     const cubeletSize = 50;
     const noMoveGroup = new THREE.Group();
     const moveGroup = new THREE.Group();
-    let count = 0;
+    let cubeletId: number = 0;
     /**
      * Offset to center the cube in particular direction base on size of cube
      * @param size  No. of cubelets in a particular direction
@@ -110,7 +110,14 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
 
             // ? Can be made efficient by using InstancedMesh and Matrix4
 
-            const cubelet = dcText(`${count}`, 15, 20, 50, 0x000000, 0xcccccc); // text #1, Hello, world
+            const cubelet = dcText(
+              `${cubeletId}`,
+              15,
+              20,
+              50,
+              0x000000,
+              0xcccccc
+            ); // text #1, Hello, world
 
             // const cubelet = new THREE.Mesh(
             //   geometry,
@@ -129,7 +136,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
 
             noMoveGroup.add(cubelet);
           }
-          count++;
+          cubeletId++;
         }
       }
     }

@@ -2,13 +2,14 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { generateValidMoves } from "./parser/notation";
 import { RubiksCube } from "./three-cuber/three-cuber";
-import { cubeMatrix } from "./cubeMatrix/cubeMatrix";
+import { cubeMatrix, cubeMatrixObj } from "./cubeMatrix/cubeMatrix";
 import "./style.css";
 import { domText } from "./domText";
 import { dcText } from "./dcText";
 
 console.log(generateValidMoves({ cubeSize: [6, 6, 6] }));
 console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
+console.log(cubeMatrixObj);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(

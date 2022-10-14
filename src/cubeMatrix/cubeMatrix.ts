@@ -57,6 +57,18 @@ const F = [...Array(cubeSize[0] * cubeSize[1]).keys()].map(
   (i) => i * cubeSize[2] + cubeSize[2] - 1
 );
 
+export type TCubeMatrixObj = {
+  [key in TFACES]: number[];
+};
+export const cubeMatrixObj: TCubeMatrixObj = {
+  U,
+  L,
+  F,
+  R,
+  B,
+  D,
+};
+
 for (let i = 0; i < cubeSize[0]; i++) {
   for (let j = 0; j < cubeSize[1]; j++) {
     for (let k = 0; k < cubeSize[2]; k++) {
