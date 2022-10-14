@@ -66,6 +66,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     const cubeletSize = 50;
     const noMoveGroup = new THREE.Group();
     const moveGroup = new THREE.Group();
+    let cubeletId: number = 0;
 
     /**
      * Offset to center the cube in particular direction base on size of cube
@@ -113,7 +114,8 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
               faceMaterials
               // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
             );
-
+            cubelet.userData = { id: cubeletId };
+            console.log(cubelet.userData);
             // Setting position of Rubiks Cube in the scene
             // TODO: if coord constain (0,n1,n2,n3) then it is a face cubelet, hide rest
 
@@ -125,6 +127,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
 
             noMoveGroup.add(cubelet);
           }
+          cubeletId++;
         }
       }
     }
