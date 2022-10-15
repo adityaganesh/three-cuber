@@ -7,8 +7,8 @@ import "./style.css";
 import { domText } from "./domText";
 import { dcText } from "./dcText";
 
-console.log(generateValidMoves({ cubeSize: [6, 6, 6] }));
-console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
+console.log(generateValidMoves({ cubeSize: [4, 5, 6] }));
+// console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
 console.log(cubeMatrixObj);
 
 const scene = new THREE.Scene();
@@ -25,7 +25,7 @@ document.body.appendChild(renderer.domElement);
 
 // domText("Hee", { x: 200, y: 200 });
 
-const cube = new RubiksCube();
+const cube = new RubiksCube([4, 5, 6]);
 const light = new THREE.AmbientLight(0xffffff); // soft white light
 const axesHelper = new THREE.AxesHelper(150);
 
