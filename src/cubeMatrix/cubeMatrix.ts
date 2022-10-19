@@ -13,7 +13,7 @@ export const cubeMatrix = (cubeSize: TCubeSize) => [
   ...Array(cubeSize[0] * cubeSize[1] * cubeSize[2]).keys(),
 ];
 
-const cubeSize: TCubeSize = [4, 5, 6];
+const cubeSize: TCubeSize = [1, 5, 1];
 const cubeMatrixArr = cubeMatrix(cubeSize);
 
 const LRSize = [...Array(cubeSize[1] * cubeSize[2]).keys()]; // y * z
@@ -46,7 +46,16 @@ const M = cubeMatrixArr.slice(
   2 * cubeSize[1] * cubeSize[2]
 );
 
+// 0 1 2 3 4 5 6   7  8  9 10 11 12 13 14 15 16 17..
+// 0 1 2 3 4 5 30 31 32 33 34 35 60 61 62 63 64 65..
+
+const Dn = [...Array(cubeSize[0] * cubeSize[2]).keys()].map((i) => i); // x * z
+
+//
+
 //TODO: find cubelet ids fro D and U layers independenly
+// const Dn = L.slice(0, cubeSize[2]).map((i) => i + cubeSize[2] * cubeSize[1]);
+
 const D = L.slice(0, cubeSize[2]);
 allMs.forEach((m) => D.push(...m.slice(0, cubeSize[2])));
 D.push(...R.slice(0, cubeSize[2]));
