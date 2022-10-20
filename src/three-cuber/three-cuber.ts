@@ -53,7 +53,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     ];
 
     this.addCube(); // Create the cube
-    this.cubeSticker("U", 0);
+    // this.cubeSticker("U", 0);
     // Add turn limitation for cuboids ???
     //(because they may not be physically possible)
     //(or For bandaged cubes)
@@ -145,6 +145,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     // Add Groups as child of Rubiks Cube Object3D
     this.add(noMoveGroup);
     this.add(moveGroup);
+    console.log(this);
   }
 
   /**
