@@ -7,7 +7,7 @@
 // position: by position in array
 // ? orientation ??
 
-import type { TCubeSize, TFACES } from "../constants";
+import type { TCubeSize } from "../constants";
 
 export const cubeMatrix = (cubeSize: TCubeSize) => [
   ...Array(cubeSize[0] * cubeSize[1] * cubeSize[2]).keys(),

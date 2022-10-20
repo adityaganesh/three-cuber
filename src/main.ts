@@ -4,12 +4,15 @@ import { generateValidMoves } from "./parser/notation";
 import { RubiksCube } from "./three-cuber/three-cuber";
 import { cubeMatrix, cubeMatrixObj } from "./cubeMatrix/cubeMatrix";
 import "./style.css";
-import { domText } from "./domText";
-import { dcText } from "./dcText";
+import { domText } from "./canvasText/domText";
+import { dcText } from "./canvasText/dcText";
+import { decomposeMove } from "./cubeMatrix/transforms";
 
-console.log(generateValidMoves({ cubeSize: [4, 5, 6] }));
+// console.log(generateValidMoves({ cubeSize: [4, 4, 4] }));
 // console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
-console.log(cubeMatrixObj);
+// console.log(cubeMatrixObj);
+const move = "x2'";
+console.log(decomposeMove(move));
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(

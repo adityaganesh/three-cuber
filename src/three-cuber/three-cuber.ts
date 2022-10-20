@@ -6,7 +6,7 @@ import {
   TFACES,
   MATERIAL_PROPS,
 } from "../constants";
-import { dcText } from "../dcText";
+import { dcText } from "../canvasText/dcText";
 
 type TMove = TFACES;
 

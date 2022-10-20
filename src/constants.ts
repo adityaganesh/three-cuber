@@ -47,6 +47,9 @@ export const FACE_MOVES = FACES;
 export const SLICE_MOVES = ["M", "E", "S"] as const;
 export const ROTATE_MOVES = ["x", "y", "z"] as const;
 
+export type TSLICE_MOVES = typeof SLICE_MOVES[number];
+export type TROTATE_MOVES = typeof ROTATE_MOVES[number];
+
 // Notation Modifiers
 
 // Suffixes
