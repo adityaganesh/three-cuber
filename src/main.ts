@@ -1,18 +1,10 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { generateValidMoves } from "./parser/notation";
 import { RubiksCube } from "./three-cuber/three-cuber";
-import { cubeMatrix, cubeMatrixObj } from "./cubeMatrix/cubeMatrix";
+import { createCubeMatrix } from "./cubeMatrix/cubeMatrix";
 import "./style.css";
-import { domText } from "./canvasText/domText";
-import { dcText } from "./canvasText/dcText";
-import { decomposeMove } from "./cubeMatrix/transforms";
-
-// console.log(generateValidMoves({ cubeSize: [4, 4, 4] }));
-// console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
-// console.log(cubeMatrixObj);
-const move = "x2'";
-console.log(decomposeMove(move));
+import { decomposeMove, updateCubeMatrixObj } from "./cubeMatrix/transforms";
+import { TCubeSize } from "./constants";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -28,7 +20,17 @@ document.body.appendChild(renderer.domElement);
 
 // domText("Hee", { x: 200, y: 200 });
 
-const cube = new RubiksCube([4, 5, 6]);
+// ####################### Rubiks Cube Stuff ##########################
+// console.log(generateValidMoves({ cubeSize: [4, 4, 4] }));
+// console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
+
+export const cubeSize: TCubeSize = [3, 3, 3];
+export const cubeMatrixObj = createCubeMatrix(cubeSize);
+const move = "x2'";
+const decomposedMove = decomposeMove(move);
+console.log(updateCubeMatrixObj(cubeMatrixObj, decomposedMove));
+
+const cube = new RubiksCube(cubeSize);
 const light = new THREE.AmbientLight(0xffffff); // soft white light
 const axesHelper = new THREE.AxesHelper(150);
 

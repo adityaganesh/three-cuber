@@ -1,4 +1,3 @@
-import { cubeMatrixObj } from "./cubeMatrix";
 import type { TCubeMatrixObj } from "./cubeMatrix";
 import {
   ROTATE_MOVES,
@@ -90,6 +89,8 @@ interface TTurnInfo {
   axis: "x" | "y" | "z";
   clockwise: boolean;
 }
+
+import { cubeMatrixObj } from "../main";
 
 /**
  * Mutate the cubeMatrixObj State and return TurnInfo

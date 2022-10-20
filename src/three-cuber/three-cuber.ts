@@ -117,7 +117,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
               50,
               0x000000,
               0xcccccc
-            ); // text #1, Hello, world
+            );
 
             // const cubelet = new THREE.Mesh(
             //   geometry,
@@ -125,6 +125,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
             //   // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
             // );
 
+            cubelet.userData.id = cubeletId;
             // Setting position of Rubiks Cube in the scene
             // TODO: if coord constain (0,n1,n2,n3) then it is a face cubelet, hide rest
 
