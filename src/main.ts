@@ -24,7 +24,7 @@ document.body.appendChild(renderer.domElement);
 // console.log(generateValidMoves({ cubeSize: [4, 4, 4] }));
 // console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
 
-export const cubeSize: TCubeSize = [3, 3, 3];
+export const cubeSize: TCubeSize = [4, 5, 6];
 export const cubeMatrixObj = createCubeMatrix(cubeSize);
 const move = "x2'";
 const decomposedMove = decomposeMove(move);

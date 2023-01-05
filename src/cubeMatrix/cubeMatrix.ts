@@ -108,6 +108,8 @@ export const createCubeMatrix = (cubeSize: TCubeSize): TCubeMatrixObj => {
     allEs,
     allMs,
     allSs,
+    cubeMatrix: [L, ...allMs, R],
+    linearCubeMatrix: linearCubeMatrixArr,
   };
 };
 
