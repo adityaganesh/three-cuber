@@ -110,25 +110,21 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
 
             // ? Can be made efficient by using InstancedMesh and Matrix4
 
-            const cubelet = dcText(
-              `${cubeletId}`,
-              15,
-              20,
-              50,
-              0x000000,
-              0xcccccc
-            );
-
-            // const cubelet = new THREE.Mesh(
-            //   geometry,
-            //   faceMaterials
-            //   // this.cubeSize[0] * this.cubeSize[1] * this.cubeSize[2]
+            // # To display cubelet ids
+            // const cubelet = dcText(
+            //   `${cubeletId}`,
+            //   15,
+            //   20,
+            //   50,
+            //   0x000000,
+            //   0xcccccc
             // );
 
-            cubelet.userData.id = cubeletId;
-            // Setting position of Rubiks Cube in the scene
-            // TODO: if coord constain (0,n1,n2,n3) then it is a face cubelet, hide rest
+            const cubelet = new THREE.Mesh(geometry, faceMaterials);
 
+            cubelet.userData.id = cubeletId;
+
+            // Setting position of Rubiks Cube in the scene
             cubelet.position.set(
               offset(this.cubeSize[0]) + spaceX,
               offset(this.cubeSize[1]) + spaceY,
@@ -241,6 +237,7 @@ export class RubiksCube extends THREE.Object3D implements TRubiksCube {
     // (So, they still remain under scene object)
     console.log(move, animate);
   }
+
   public cubeSticker(text: string, id: number) {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");

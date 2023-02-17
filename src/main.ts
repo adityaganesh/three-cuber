@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RubiksCube } from "./three-cuber/three-cuber";
 import { createCubeMatrix } from "./cubeMatrix/cubeMatrix";
 import "./style.css";
-import { decomposeMove, updateCubeMatrixObj } from "./cubeMatrix/transforms";
+import { onMoveTurnInfoAndUpdateMatrix } from "./cubeMatrix/transforms";
 import { TCubeSize } from "./constants";
 
 const scene = new THREE.Scene();
@@ -24,11 +24,12 @@ document.body.appendChild(renderer.domElement);
 // console.log(generateValidMoves({ cubeSize: [4, 4, 4] }));
 // console.log(JSON.stringify(cubeMatrix([3, 3, 3])));
 
-export const cubeSize: TCubeSize = [4, 5, 6];
+export const cubeSize: TCubeSize = [17, 19, 20];
 export const cubeMatrixObj = createCubeMatrix(cubeSize);
 const move = "x2'";
-const decomposedMove = decomposeMove(move);
-console.log(updateCubeMatrixObj(cubeMatrixObj, decomposedMove));
+
+const moveInfo = onMoveTurnInfoAndUpdateMatrix(move);
+console.log(moveInfo);
 
 const cube = new RubiksCube(cubeSize);
 const light = new THREE.AmbientLight(0xffffff); // soft white light

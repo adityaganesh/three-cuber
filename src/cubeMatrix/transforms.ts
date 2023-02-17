@@ -98,18 +98,18 @@ interface TTurnInfo {
  * @param move
  * @returns
  */
-// export const onMoveTurnInfoAndUpdateMatrix = (move: string): TTurnInfo => {
-//   //# Decompose move to face, and modifiers =[prefix, suffix]
-//   const { baseMove, prefix, clockwise, rotationFactor } = decomposeMove(move);
+export const onMoveTurnInfoAndUpdateMatrix = (move: string): TTurnInfo => {
+  //# Decompose move to face, and modifiers =[prefix, suffix]
+  const { baseMove, prefix, clockwise, rotationFactor } = decomposeMove(move);
 
-//   //# Apply tranformations to cubeMatrixObj
-//   const { cubelets, axis } = updateCubeMatrixObj(cubeMatrixObj, {
-//     baseMove,
-//     prefix,
-//     clockwise,
-//     rotationFactor,
-//   });
+  //# Apply tranformations to cubeMatrixObj
+  const { cubelets, axis } = updateCubeMatrixObj(cubeMatrixObj, {
+    baseMove,
+    prefix,
+    clockwise,
+    rotationFactor,
+  });
 
-//   //# Return MoveTurnInfo
-//   return { cubelets, rotationFactor, axis, clockwise };
-// };
+  //# Return MoveTurnInfo
+  return { cubelets, rotationFactor, axis, clockwise };
+};
